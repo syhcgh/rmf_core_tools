@@ -3,10 +3,9 @@ config:
     control_type: full_control
     linear_velocity: 0.7
     angular_velocity: 2.2
-    linear_acceleration: 3.0
-    angular_accelaration: 5.0
     profile_radius: 0.3
     profile_shape: square
+    update_rate: 20 # Frequency of updating FleetStates
 
 state:
     x: 0.0
