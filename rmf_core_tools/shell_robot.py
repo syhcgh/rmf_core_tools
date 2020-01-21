@@ -22,12 +22,11 @@ class ShellRobot:
 
     def on(self):
         # "Turns on" the robot. The robot will start publishing fleet states, and will respond to Requests. 
-        # By default we move to the "resume" motor state.
-        raise NotImplementedError
+        self.details["state"]["mode"] = 'on'
 
     def off(self):
         # "Turns off" the robot. The robot will stop publishing fleet states, and will not respond to Requests
-        raise NotImplementedError
+        self.details["state"]["mode"] = 'off'
 
     def pause(self):
         # Robot does not move, although it is on. Simulates scenarios like temporary obstructions
@@ -61,6 +60,7 @@ def main(args=None):
     rclpy.init(args=args)
     robot_name = "magni" # TODO: Replace with parameter from ROS2
     robot = ShellRobot(robot_name)
+    robot.off()
     print(robot.details)
 
 if __name__ == '__main__':
