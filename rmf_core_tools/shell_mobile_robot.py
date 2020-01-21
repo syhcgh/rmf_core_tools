@@ -32,20 +32,20 @@ class ShellMobileRobot:
         self.dt = 1.0 / float(self.details["config"]["update_rate"])
 
     def on(self):
-        # "Turns on" the robot motors. The robot will start publishing fleet states, and will respond to Requests. 
+        # "Turns on" the robot. The robot will start publishing fleet states, and will respond to Requests. 
         self.details["state"]["mode_on"] = True
 
     def off(self):
-        # "Turns off" the robot motors. The robot will stop publishing fleet states, and will not respond to Requests
+        # "Turns off" the robot. The robot will stop publishing fleet states, and will not respond to Requests
         self.details["state"]["mode_on"] = False
 
     def pause(self):
         # Robot does not move, although it is on. Simulates scenarios like temporary obstructions
-        raise NotImplementedError
+        self.details["state"]["motor_on"] = True
 
     def resume(self):
         # Robot resumes movement, simulating the removal of temporary obstructions
-        raise NotImplementedError
+        self.details["state"]["motor_on"] = False
      
     def rotate(self, yaw):
         # Spins robot to the specified angle
