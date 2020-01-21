@@ -6,7 +6,7 @@ import numpy as np
 import time
 from threading import Thread
 
-def normalize_angle(self, yaw):
+def normalize_angle(yaw):
     angle = yaw % (2 * np.pi)
     angle = ( angle + 2 * np.pi ) % (2 * np.pi)
     if (angle > np.pi):
@@ -48,13 +48,31 @@ class ShellMobileRobot:
      
     def rotate(self, yaw):
         # Spins robot to the specified angle
-        yaw_now = self.details["state"]["yaw"]
-        hz = self.details["config"]["update_rate"]
-        thread = Thread(target = self._rotate_thread, args = (yaw, hz))
+        thread = Thread(target = self._rotate_thread, args = (normalize_angle(yaw),))
         thread.start()
 
-def _rotate_thread(self, yaw, hz):
-        # Thread that spins robot asynchronously 
+    def _rotate_thread(self, yaw):
+            # Thread that spins robot asynchronously 
+            yaw_now = self.details["state"]["yaw"]
+            angular_vel = self.details["config"]["angular_velocity"]
+            dt = 1.0 / float(self.details["config"]["update_rate"])
+
+            direction = 1
+            if yaw - yaw_now < np.pi: # spin anticlockwise
+                pass
+            else:
+                direction = -1  # spin clockwise, flip direction of spin
+
+            self.node.get_logger().info("Rotating to yaw of " + str(yaw) + " from a yaw of " + str(yaw_now) + ".")
+            time.sleep(1.5)
+
+            while np.abs(yaw - yaw_now) > angular_vel*dt:
+                time.sleep(dt)
+                yaw_now = normalize_angle(yaw_now + angular_vel * dt * direction)
+                self.details["state"]["yaw"] = yaw_now
+                self.get_state()
+
+            self.details["state"]["yaw"] = yaw
 
     def move(self, pos):
         # Translates the robot to the specified position
@@ -63,7 +81,6 @@ def _rotate_thread(self, yaw, hz):
         # pos_now = np.array([x_now, y_now])
         # d_vec = pos - pos_now
         raise NotImplementedError
-
     
     def get_state(self):
         # Get the current status of the robot in a human-readable printout
@@ -92,7 +109,7 @@ def main(args=None):
     rclpy.init(args=args)
     robot_name = "magni" # TODO: Replace with parameter from ROS2
     robot = ShellMobileRobot(robot_name)
-    # robot.rotate(2)
+    robot.rotate(-np.pi)
 
 if __name__ == '__main__':
     main()
