@@ -12,8 +12,8 @@ state:
     x: 0.0
     y: 0.0
     yaw: 0.0
-    mode: on
-    motor: on
+    mode_on: true
+    motor_on: true
 
 topics: # only the relevant topic will be used based on the control_type 
     fleet_state_topic: fleet_states
