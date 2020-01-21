@@ -54,11 +54,11 @@ class ShellMobileRobot:
 
     def pause(self):
         # Robot does not move, although it is on. Simulates scenarios like temporary obstructions
-        self.details["state"]["motor_on"] = True
+        self.details["state"]["motor_on"] = False
 
     def resume(self):
         # Robot resumes movement, simulating the removal of temporary obstructions
-        self.details["state"]["motor_on"] = False
+        self.details["state"]["motor_on"] = True
      
     def rotate(self, yaw):
         # Spins robot to the specified angle
@@ -88,6 +88,8 @@ class ShellMobileRobot:
 
             while True:
                 if not self.details["state"]["motor_on"]:
+                    self.node.get_logger().info("Robot is currently paused, waiting to resume...")
+                    time.sleep(3)
                     continue
 
                 if time_passed < time_required:
@@ -129,6 +131,8 @@ class ShellMobileRobot:
 
         while True:
             if not self.details["state"]["motor_on"]:
+                self.node.get_logger().info("Robot is currently paused, waiting to resume...")
+                time.sleep(3)
                 continue
 
             if time_passed < time_required:
