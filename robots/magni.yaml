@@ -1,0 +1,22 @@
+config:
+    fleet_name: magni
+    control_type: full_control
+    linear_velocity: 0.7
+    angular_velocity: 2.2
+    linear_acceleration: 3.0
+    angular_accelaration: 5.0
+    profile_radius: 0.3
+    profile_shape: square
+
+state:
+    x: 0.0
+    y: 0.0
+    yaw: 0.0
+    mode: on
+    motor: on
+
+topics: # only the relevant topic will be used based on the control_type 
+    fleet_state_topic: fleet_states
+    path_request_topic: path_requests
+    destination_request_topic: destination_requests
+    mode_request_topic: mode_requests

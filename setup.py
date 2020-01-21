@@ -13,6 +13,7 @@ setup(
         ('share/' + package_name + '/launch', glob.glob('launch/*.launch.xml')),
         ('share/' + package_name + '/maps', glob.glob('maps/*')),
         ('share/' + package_name + '/config', glob.glob('config/*')),
+        ('share/' + package_name + '/robots', glob.glob('robots/*')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -23,7 +24,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'fake_fleet = rmf_core_tools.fake_fleet:main'
+            'shell_robot = rmf_core_tools.shell_robot:main'
         ],
     },
 )
