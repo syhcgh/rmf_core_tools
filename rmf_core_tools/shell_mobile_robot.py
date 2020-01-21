@@ -46,18 +46,22 @@ class ShellMobileRobot:
 
     def on(self):
         # "Turns on" the robot. The robot will start publishing fleet states, and will respond to Requests. 
+        self.node.get_logger().info("Turning on robot. Robot will start publishing fleet states.")
         self.details["state"]["mode_on"] = True
 
     def off(self):
         # "Turns off" the robot. The robot will stop publishing fleet states, and will not respond to Requests
+        self.node.get_logger().info("Turning off robot. Robot will stop publishing fleet states.")
         self.details["state"]["mode_on"] = False
 
     def pause(self):
         # Robot does not move, although it is on. Simulates scenarios like temporary obstructions
+        self.node.get_logger().info("Robot paused. Robot will not move until resume is called.")
         self.details["state"]["motor_on"] = False
 
     def resume(self):
         # Robot resumes movement, simulating the removal of temporary obstructions
+        self.node.get_logger().info("Robot resumed. Robot will start moving again.")
         self.details["state"]["motor_on"] = True
      
     def rotate(self, yaw):
@@ -103,6 +107,7 @@ class ShellMobileRobot:
                     break
 
             self.details["state"]["yaw"] = float(yaw)
+            self.node.get_logger().info("Rotation complete.")
 
     def move(self, pos):
         thread = Thread(target = self._move_thread, args = (pos,))
@@ -146,6 +151,7 @@ class ShellMobileRobot:
                 break
         self.details["state"]["x"] = float(pos[0])
         self.details["state"]["y"] = float(pos[1])
+        self.node.get_logger().info("Movement complete.")
 
     def get_state(self):
         # Get the current status of the robot in a human-readable printout
