@@ -1,4 +1,5 @@
 config:
+    name: magni1
     fleet_name: magni
     control_type: full_control
     linear_velocity: 0.7
@@ -13,6 +14,9 @@ state:
     yaw: 0.0
     mode_on: true
     motor_on: true
+    task_id: ""
+    battery_percent: 100.0
+    level_name: demo-level
 
 topics: # only the relevant topic will be used based on the control_type 
     fleet_state_topic: fleet_states
