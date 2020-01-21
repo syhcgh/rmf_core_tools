@@ -1,0 +1,8 @@
+building_name: chart
+levels:
+  demo-level:
+    drawing:
+      filename: demo_floorplan.jpg
+    elevation: 0
+    vertices: []
+    lanes: []

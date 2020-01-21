@@ -1,7 +1,7 @@
 from setuptools import setup
+import glob
 
 package_name = 'rmf_core_tools'
-
 setup(
     name=package_name,
     version='0.0.0',
@@ -10,6 +10,8 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+        ('share/' + package_name + '/launch', glob.glob('launch/*.launch.xml')),
+        ('share/' + package_name + '/maps', glob.glob('maps/*')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
