@@ -64,10 +64,12 @@ class ShellMobileRobot:
         self.node.get_logger().info("Robot resumed. Robot will start moving again.")
         self.details["state"]["motor_on"] = True
      
-    def rotate(self, yaw):
+    def rotate(self, yaw, block=False):
         # Spins robot to the specified angle
         thread = Thread(target = self._rotate_thread, args = (normalize_angle(yaw),))
         thread.start()
+        if block:
+            thread.join()
 
     def _rotate_thread(self, yaw):
             # Thread that spins robot asynchronously 
@@ -109,9 +111,11 @@ class ShellMobileRobot:
             self.details["state"]["yaw"] = float(yaw)
             self.node.get_logger().info("Rotation complete.")
 
-    def move(self, pos):
+    def move(self, pos, block=False):
         thread = Thread(target = self._move_thread, args = (pos,))
         thread.start()
+        if block:
+            thread.join()
 
     def _move_thread(self, pos):
         # Thread that moves the robot synchronously
@@ -178,7 +182,7 @@ class ShellMobileRobot:
         if self.details["state"]["task_id"] == "":
             robot_mode_msg.mode = 0 # IDLE
         else:
-            if not self.details["motor_on"]:
+            if not self.details["state"]["motor_on"]:
                 robot_mode_msg.mode = 3 # PAUSED
             else:
                 robot_mode_msg.mode = 2 # MOVING
@@ -210,11 +214,27 @@ class ShellMobileRobot:
 
     def path_request_callback(self, msg):
         # Handles the message received on from the fleet adapter, Depending on the type of control.
-        raise NotImplementedError
+        if msg.fleet_name == self.details["config"]["fleet_name"]:
+            if msg.robot_name == self.details["config"]["name"]:
+                self.node.get_logger().info("Received path request for this agent " + msg.fleet_name + " : " +  msg.robot_name)
+                self.path = msg.path
+                self.details["state"]["task_id"] = msg.task_id
+                self.node.get_logger().info("Message data has been processed.")
 
     def mode_request_callback(self, msg):
         # Handles the message received on from the fleet adapter, Depending on the type of control.
         raise NotImplementedError
+
+    def listen(self):
+        # Starts listening for the newest Request
+        old_task_id = self.details["state"]["task_id"]
+        rclpy.spin_once(self.node)
+        if old_task_id != self.details["state"]["task_id"]:
+            # New request received
+            while self.path:
+                location = self.path.pop(0)
+                self.move(np.array([location.x, location.y]), block=True)
+                self.rotate(location.yaw, block=True)
 
 def main(args=None):
     rclpy.init(args=args)
