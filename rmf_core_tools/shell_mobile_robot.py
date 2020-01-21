@@ -6,6 +6,13 @@ import numpy as np
 import time
 from threading import Thread
 
+def normalize_angle(self, yaw):
+    angle = yaw % (2 * np.pi)
+    angle = ( angle + 2 * np.pi ) % (2 * np.pi)
+    if (angle > np.pi):
+        angle -= 2 * np.pi
+    return angle
+
 class ShellMobileRobot:
     def __init__(self, robot_name):
         self.node = rclpy.create_node("shell_" + robot_name)
@@ -38,14 +45,7 @@ class ShellMobileRobot:
     def resume(self):
         # Robot resumes movement, simulating the removal of temporary obstructions
         raise NotImplementedError
-    
-    def normalize_angle(self, yaw):
-        angle = yaw % (2 * np.pi)
-        angle = ( angle + 2 * np.pi ) % (2 * np.pi)
-        if (angle > np.pi):
-            angle -= 2 * np.pi
-        return angle
-    
+     
     def rotate(self, yaw):
         # Spins robot to the specified angle
         yaw_now = self.details["state"]["yaw"]
