@@ -23,6 +23,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            'fake_fleet = rmf_core_tools.fake_fleet:main'
         ],
     },
 )
