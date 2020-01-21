@@ -12,6 +12,7 @@ setup(
         ('share/' + package_name, ['package.xml']),
         ('share/' + package_name + '/launch', glob.glob('launch/*.launch.xml')),
         ('share/' + package_name + '/maps', glob.glob('maps/*')),
+        ('share/' + package_name + '/config', glob.glob('config/*')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,

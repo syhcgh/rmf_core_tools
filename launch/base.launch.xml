@@ -22,7 +22,7 @@
       <param name="use_sim_time" value="$(var use_sim_time)"/>
     </node>
 
-    <let name="config_file" value="$(find-pkg-share rmf_schedule_visualizer)/config/rmv.rviz"/>
+    <let name="config_file" value="$(find-pkg-share rmf_core_tools)/config/rmv.rviz"/>
     <executable cmd="rviz2 $(var config_file)" output="both"/>
   </group>
 
