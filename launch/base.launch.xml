@@ -24,6 +24,9 @@
 
         <let name="config_file" value="$(find-pkg-share rmf_core_tools)/config/rmv.rviz"/>
         <executable cmd="rviz2 $(var config_file)" output="both"/>
+
+        <node pkg="fleet_state_visualizer" exec="fleet_state_visualizer" output="both" >
+        </node>
     </group>
 
 </launch>
