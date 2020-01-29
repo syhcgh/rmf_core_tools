@@ -12,5 +12,6 @@ cp rmf_core_tools/deps.repos .
 vcs import < deps.repos
 cd ..
 # Source your ROS2
+source /opt/ros/eloquent/setup.bash
 colcon build
 ```
